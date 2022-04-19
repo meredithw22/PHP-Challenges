@@ -1,0 +1,57 @@
+HTML DOCUMENT
+FOLLOWED BY PHP SCRIPT
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PHP Form</title>
+</head>
+<body>
+    <h1><?php echo "php Blog"; ?></h1>
+
+<form method="POST">
+<p>Title</p> <input type="text" name="title">
+<p>Subject/Catagory</p> <input type="text" name="subject">
+<p>Blog</p> <input type="text" name="blog">
+
+
+<input type="submit" value="Submit" name="Submit">
+</form>
+
+</body>
+</html>
+
+//PHP SCRIPT
+<?php
+
+if (isset($_POST["Submit"])) {
+
+    $title = $_POST['title'];
+    $subject = $_POST['subject'];
+    $blog = $_POST['blog'];
+
+    $file = "blog.txt";
+    $data = "title: $title, \n subject:$subject \n blog:$blog";
+    $handle = fopen($file, "c+")or die("ERROR: Cannot open the file.");
+    fwrite($handle, $data)or die ("ERROR: Cannot write the file.");
+    fclose($handle);
+    echo "success!";
+
+}
+
+
+
+?>
+
+
+
+CONFIG FILE
+<?php
+
+$host = 'localhost';
+$db = 'library';
+$user = 'root';
+$pass = '*****';
+
+?>
