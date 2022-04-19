@@ -1,0 +1,73 @@
+Using and creating a schema using Mongo Database using ExpressJS
+Example: adding movies and querying the database
+
+INDEX.JS
+
+// required packages w/ database connection
+const express = require('express');
+const bodyParser = require('body-parser');
+const mongoClient = require ('mongodb');
+const url = "selkirk://localhost:27017";
+
+const app = express();
+
+// mongoClient.connect(url, function(err,database){
+//     if (err){
+//         throw err
+//     }else {
+//         let dbo = database.db('mongo_movies');
+//         console.log("connected");
+//     }
+// });
+
+let dbo = database.db('mongo_movies');
+// insert data
+
+dbo.collection("movies")
+dbo.movies.insert([
+    {
+        title:"Smoke Signals", 
+        studio:"miramax", 
+        year:"1999"},
+    
+    {   title:"Mulan", 
+        studio:"Disney", 
+        year:"1998"},
+
+    {   title:"One Week", 
+       studio:"Mongrel Media", 
+       year:"2008"},
+
+    {   title:"Black Panther", 
+        studio:"Marvel Studios", 
+        year:"2018"},
+
+    {   title:"SpiderMan: Into the Spider-verse",
+        studio:"Marvel Studios", 
+        year:"2018"},
+
+    {   title:"My Neighbour Totoro", 
+        studio:"Studio Ghibli", 
+        year:"1988"},
+
+   {    title:"Princess Bride", 
+        studio:"20centFox", 
+        year:"1987"},
+
+    {   title:"Find Me Guilty", 
+        studio:"One Race Films", 
+        year:"2006"},       
+
+  {     title:"My Cousin Vinny", 
+        studio:"Palo Vista Prod.", 
+        year:"1992"},
+    
+   {    title:"Mean Girls", 
+        studio:"Lorne Michaels Prod.", 
+        year:"2004"}
+    
+
+])
+        
+dbo.movies.find().pretty()
+
