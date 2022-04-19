@@ -1,0 +1,160 @@
+Web app using MongoDB CRUD operation w/ ExpressJS + ejs
+
+
+HTML DOC
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Library App</title>
+</head>
+
+
+<h1>Library App</h1>
+<body>
+  Insert Book
+  
+  <form action="/..index.ejs" method="GET">
+  <input type="text" placeholder="title" name="title">
+  <input type="text" placeholder="author" name="author">
+  <input type="text" placeholder="bookavail" name="bookavail">
+  <button type="submit">Submit</button>
+</form>
+  
+  
+</body>
+</html>
+
+
+SERVER.JS
+
+//packages + server connection
+const express =  require('express');
+const mysql = require('mysql');
+const app = express();
+const bodyParser = require('body-parser');
+
+app.use(bodyParser.urlencoded({extended:true}));
+
+
+//database connection
+const mysqlConnect = mysql.createConnection({
+    host: 'localhost',
+    user: 'root',
+    password: 'Kaslo1217',
+    database: 'Book'
+
+})
+
+app.set('view engine', 'ejs');
+
+//connection check
+mysqlConnect.connect((err) => {
+    if(!err) {
+        console.log("connected")
+    }
+
+    else {
+        console.log("failed");
+    }
+});
+
+
+//SELECT operations
+app.get('/select/', function (req,res){
+    mysqlConnect.query("select * from book",(err,rows,fields) => {
+        console.log(results)
+
+
+        res.render('..index.ejs', {object:results})
+
+    //})
+        let value = rows
+        res.send(value)
+
+        let data = rows.forEach( element => {
+            console.log(element['title'])
+        })
+
+
+    })}).then (data =>{
+        res.send(data);
+    })
+
+    app.get('/', function (req,res){
+
+        res.sendFile('form.html', {root : __dirname});
+})
+
+
+
+//CREATE operation
+app.get('/addto/', function (req, res){
+    console.log(req.query);
+    let title = req.query.title;
+    console.log(title);
+    let author = req.query.author;
+    let id = req.query.id;
+
+    let values = [title,author,id]
+
+    let sql = "insert into Book(Title, Author,id) values(?,?,?)";
+
+    mysqlConnect.query(sql,values,(err,Book)=>{
+
+        let books = [
+            {title:title},{author:author},{id:id}
+
+        ];
+        let message = "select page";
+
+        //res.end();
+    res.render('/about.ejs', {
+        title:title,
+        author:author,
+        id:id,
+        message:message
+        
+    });
+})
+
+})
+
+UPDATE operation
+app.get('/post', function (req, res){
+    let title = req.body.title;
+    let author = req.body.author;
+    let id = req.body.id;
+
+
+})
+
+
+
+app.listen(3001);
+
+
+
+
+EJS about.ejs file
+
+<h1>
+    <%= message %>
+    </h1>
+    
+    <ul>
+    <% users.forEach(function(user){ %>
+        
+        <li>
+        <%= user.name %>
+        <%= user.username %>
+    </li>
+    
+    <% }) %>
+    
+
+    <%- include('../partials/header'); %>
+    </ul>
+    
+    <!-- make users into the object and loop through the title author available -->
