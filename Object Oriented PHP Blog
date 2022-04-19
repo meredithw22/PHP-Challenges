@@ -1,0 +1,82 @@
+<?php
+
+//Database connection
+try{
+    $pdo = new PDO("mysql:host=localhost;dbname=blogdb", "mw", "****");
+    
+    // Set the PDO error mode to exception
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    
+    // Print host information
+    echo "Connect Successfully. Host info: " . 
+$pdo->getAttribute(constant("PDO::ATTR_CONNECTION_STATUS"));
+} catch(PDOException $e){
+    die("ERROR: Could not connect. " . $e->getMessage());
+};
+
+//create users
+class Users {
+
+    public $firstname;
+    public $lastname;
+
+
+    function postBlog($content){
+        $this->content = $content;
+        echo $content;
+    }
+
+    function insert_sql($content, $pdo){
+        $this->content = $content;
+
+        $sql = "insert into blog(Post_content) values (:content)";
+        $statement = $pdo->prepare($sql);
+            var_dump($sql);
+        $arguments = [':content'=>$content];
+        echo "inserted content";
+        $statement->execute($arguments);
+    }
+}
+
+
+class postBlog extends Users{
+    public function post($content){
+        $this->content = $content;
+        echo "content posted";
+    }
+}
+
+
+
+if($_SERVER['REQUEST_METHOD']=="POST"){
+$newInsert = new Users();
+
+$newInsert->insert_sql($_POST["blog"],$pdo);
+}
+
+
+?>
+
+HTML DOCS
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PHP Form</title>
+</head>
+<body>
+    <h1><?php echo "php Blog"; ?></h1>
+
+<form method="POST">
+<!-- <p>Title</p> <input type="text" name="title">
+<p>Subject/Catagory</p> <input type="text" name="subject"> -->
+<p>Blog</p> <input type="text" name="blog">
+
+
+<input type="submit" value="Submit" name="Submit">
+</form>
+
+</body>
+</html>
+
