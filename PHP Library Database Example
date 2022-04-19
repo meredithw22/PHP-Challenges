@@ -1,0 +1,155 @@
+PHP Library Database Example with CRUD operations
+
+HTML => PHP 
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Library App</title>
+</head>
+<body>
+    <h1><?php echo "Library App"; ?></h1>
+
+    <form action="insert.php" method="POST">
+<p>Add Bookavail</p> <input type="text" name="bookavail">
+<p>Add Title</p> <input type="text" name="title">
+<p>Add Author</p> <input type="text" name="author">
+
+
+<br>
+
+<input type="submit" value="Submit">
+</form>
+
+
+
+
+ <form action="delete.php"
+ method="POST">
+ <p>Enter Title to Delete</p> <input type="text" name="delete">
+
+ <input type="submit" value="Submit">
+
+
+</form>
+
+<?php require 'select.php' ?>
+
+</body>
+</html>
+
+
+
+PHP SCRIPT
+
+Config 
+<?php
+
+$host = 'localhost';
+$db = 'library';
+$user = 'root';
+$pass = '';
+
+?>
+
+DELETE operation
+
+<?php
+
+$delete= $_POST['delete'];
+
+$link = mysqli_connect("localhost", "mw", "***", "library");
+// Error Checking PHP
+
+if($link === false){
+    die("ERROR: Could not connect. " . mysqli_connect_error());
+}
+
+$sql = "DELETE FROM Book where Title = '$delete'"; 
+
+
+
+
+
+if (mysqli_query($link,$sql)) {  
+
+    header("Location: challenge3.1.php");
+  
+  };
+
+
+  ?>
+
+
+INSERT operation
+
+<?php
+
+// MYSQLI Procedural Query 
+
+$bookavail = $_POST['bookavail'];
+$Author = $_POST['author'];
+$Title =$_POST['title'];
+
+$link = mysqli_connect("localhost", "mw", "***", "library");
+// Error Checking PHP
+
+if($link === false){
+    die("ERROR: Could not connect. " . mysqli_connect_error());
+}
+// Print host information
+// echo "Connect Successfully. Host info: " . mysqli_get_host_info($link);
+
+//$sql = "INSERT INTO data(data) VALUES ('{$_POST['name']}')";
+$sql = "INSERT INTO Book (Title, Author, bookavail) VALUES ('$Title','$Author','$bookavail')";
+
+
+// INSERT INTO Persons (PersonID,FirstName,LastName,Age) VALUES ('4','joetest','joe','19');
+if (mysqli_query($link,$sql)) {  
+
+  header("Location: challenge3.1.php");
+
+};
+
+
+
+?>
+
+
+SELECT operation
+<?php
+
+$link = mysqli_connect("localhost", "mw", "***", "library");
+
+
+$sql = "SELECT * FROM Book";
+$res = mysqli_query($link, $sql);
+
+
+if($link === false){
+    die("ERROR: Could not connect. " . mysqli_connect_error());
+}
+// print_r($res);t
+
+if($res) {
+  
+  while($row = mysqli_fetch_row($res)){    // while their are resutls do this 
+//   echo <<<"EOL"
+//   <p>{$row[0]},{$row[1]}</p>
+//     EOL;
+ echo "<p>".$row[0]. '.' . $row[1]."</p>";
+
+
+//     echo "<form action='delete.php' method=POST>" . "Book Title" . " " . "<strong>" . $row[1] . "</strong>" . " " . "<input type='hidden' value='$row[0]' name='id'>" .  "<input type='submit' value='delete'>" . "</form>";
+   };
+};
+
+
+?>
+
+
+
+
+
+
